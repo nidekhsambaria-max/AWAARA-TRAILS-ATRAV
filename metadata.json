@@ -1,0 +1,12 @@
+{
+  "name": "AWAARA Trails",
+  "description": "Travel Beyond the Ordinary. Discover handpicked destinations, personalized itineraries, and unforgettable experiences crafted just for you.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API",
+    "AI Travel Planning",
+    "Local Intelligence",
+    "Premium Itineraries",
+    "ATRAV Elite"
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Premium traveler profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["free", "premium", "admin"] },
+        "aiGenerationsUsed": { "type": "integer" },
+        "isPremium": { "type": "boolean" },
+        "premiumType": { "type": "string" },
+        "premiumExpiry": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "SavedPlace": {
+      "title": "Saved Place",
+      "description": "A specific location saved by the user",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "placeName": { "type": "string" },
+        "location": { "type": "object" },
+        "notes": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "placeName"]
+    },
+    "AIGenerationsLog": {
+      "title": "AI Generation Request",
+      "description": "Log of AI generation events",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "generationType": { "type": "string" },
+        "prompt": { "type": "string" },
+        "response": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "generationType"]
+    },
+    "Subscription": {
+      "title": "Subscription Record",
+      "description": "Active subscription details",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "planId": { "type": "string", "enum": ["free", "elite_monthly", "elite_yearly"] },
+        "status": { "type": "string", "enum": ["active", "cancelled", "expired"] },
+        "startDate": { "type": "string", "format": "date-time" },
+        "endDate": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "planId", "status"]
+    },
+    "Payment": {
+      "title": "Payment Transaction",
+      "description": "Record of a payment event",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "subscriptionId": { "type": "string" },
+        "amount": { "type": "integer" },
+        "currency": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+        "provider": { "type": "string" },
+        "providerRef": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amount", "status"]
+    },
+    "Usage": {
+      "title": "Premium Usage",
+      "description": "Track AI tokens and image generations",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "aiGenerations": { "type": "integer" },
+        "imageGenerations": { "type": "integer" },
+        "lastReset": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId"]
+    },
+    "Itinerary": {
+      "title": "Travel Itinerary",
+      "description": "AI-generated cinematic travel plan",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "destination": { "type": "string" },
+        "duration": { "type": "integer" },
+        "budget": { "type": "string" },
+        "travelers": { "type": "string" },
+        "travelStyle": { "type": "string" },
+        "interests": { "type": "array", "items": { "type": "string" } },
+        "startingLocation": { "type": "string" },
+        "generatedPlan": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "tripType": { "type": "string" }
+      },
+      "required": ["userId", "destination", "duration", "generatedPlan"]
+    },
+    "TravelHistory": {
+      "title": "Travel History",
+      "description": "Log of user generation history",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "itineraryId": { "type": "string" },
+        "viewedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "itineraryId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile and role data"
+    },
+    "/itineraries/{itineraryId}": {
+      "schema": "Itinerary",
+      "description": "Premium AI generated itineraries"
+    },
+    "/users/{userId}/savedTrips/{tripId}": {
+      "schema": "SavedTrip",
+      "description": "User's personal collection of saved trips"
+    },
+    "/users/{userId}/travelHistory/{historyId}": {
+      "schema": "TravelHistory",
+      "description": "History of user research and generations"
+    },
+    "/users/{userId}/atlas/{placeId}": {
+      "schema": "SavedPlace",
+      "description": "User's personal atlas of saved places"
+    }
+  }
+}
